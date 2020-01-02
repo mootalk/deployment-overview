@@ -6,6 +6,8 @@ import * as ReactDOM from "react-dom";
 import * as DevOps from "azure-devops-extension-sdk";
 
 // Global UI
+import './index.scss';
+import "azure-devops-ui/Core/_platformCommon.scss";
 import { Surface } from 'azure-devops-ui/Surface';
 import { Header, TitleSize } from "azure-devops-ui/Header";
 import { Page } from "azure-devops-ui/Page";
@@ -18,6 +20,7 @@ import {
     ITableColumn,
     Table} from "azure-devops-ui/Table";
 
+// Services, Models & UI
 import { ReleaseService } from './ReleaseService';
 import { ReleaseDef } from './ReleaseDef';
 import { ReleaseColumn } from './ReleaseColumn';
@@ -48,7 +51,10 @@ export class App extends React.Component<{}, IAppState> {
     }
 
     public async componentDidMount() {
+        console.log('hi there');
         const definitions = await ReleaseService.getDefinitions();
+        console.log('look what I found!');
+        console.log(definitions);
         this.updateReleaseDefinitions(definitions);
     }
 
