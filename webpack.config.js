@@ -23,7 +23,7 @@ module.exports = {
   entry: entries,
   output: {
     filename: "[name]/[name].js",
-    publicPath: "/build/"
+    publicPath: "build/"
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
