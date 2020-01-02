@@ -1,0 +1,47 @@
+{
+  "name": "deployment-view",
+  "version": "0.0.3",
+  "description": "Deployment View",
+  "keywords": [
+    "Deployment view",
+    "Releases",
+    "Release maangement"
+  ],
+  "scripts": {
+    "start": "HTTPS=true react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "package": "npm run clean-build && tfx extension create --root ./ --output-path ./DeploymentOverviewV0_0_2.vsix --manifest-globs ./vss-extension.json",
+    "clean-build": "del-cli build/**/runtime~main*.map build/**/runtime~main*.js"
+  },
+  "dependencies": {
+    "azure-devops-extension-api": "~1.157.0",
+    "azure-devops-extension-sdk": "~2.0.11",
+    "azure-devops-ui": "~1.157.0",
+    "react": "~16.8.1",
+    "react-dom": "~16.8.1"
+  },
+  "devDependencies": {
+    "@types/react": "~16.8.2",
+    "@types/react-dom": "~16.8.0",
+    "react-scripts": "3.2.0",
+    "del-cli": "3.0.0",
+    "tfx-cli": "0.7.11",
+    "typescript": "^3.7.4",
+    "tslint": "^5.18.0",
+    "tslint-react": "^4.0.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

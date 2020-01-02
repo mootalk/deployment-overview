@@ -1,0 +1,102 @@
+{
+  "manifestVersion": 1,
+  "id": "deployment-view",
+  "publisher": "mootalk",
+  "version": "0.0.3",
+  "name": "deployment view",
+  "description": "A simple overview of the deployed versions in the various stages",
+  "public": false,
+  "categories": [
+    "Azure Pipelines"
+  ],
+  "demands": [
+    "api-version/5.1"
+  ],
+  "scopes": [
+    "vso.release",
+    "vso.build"
+  ],
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "icons": {
+    "default": "marketplace/icon-dark.png",
+    "branding": "marketplace/icon-dark.png"
+  },
+  "tags": [
+    "Deployment view",
+    "Releases",
+    "Release maangement"
+  ],
+  "files": [
+    {
+      "path": "build",
+      "addressable": true
+    },
+    {
+      "path": "marketplace",
+      "addressable": true
+    }
+  ],
+  "contributions": [
+    {
+      "id": "feature-view-dev",
+      "type": "ms.vss-web.feature",
+      "description": "Show the deployment development view in the Pipelines hub group, this enables the local development of this package",
+      "targets": [
+        "ms.vss-web.managed-features",
+        "ms.vss-web.managed-features-onprem"
+      ],
+      "properties": {
+        "name": "Feature Deployment View",
+        "userConfigurable": true,
+        "hostConfigurable": true,
+        "hostScopes": [
+          "project",
+          null
+        ],
+        "defaultState": false
+      }
+    },
+    {
+      "id": "view",
+      "type": "ms.vss-web.hub",
+      "targets": [
+        "ms.vss-build-web.build-release-hub-group"
+      ],
+      "properties": {
+        "name": "Deployment overview",
+        "uri": "build/index.html",
+        "icon": {
+          "light": "marketplace/icon-light.png",
+          "dark": "marketplace/icon-dark.png"
+        }
+      }
+    },
+    {
+      "id": "view-dev",
+      "type": "ms.vss-web.hub",
+      "targets": [
+        "ms.vss-build-web.build-release-hub-group"
+      ],
+      "properties": {
+        "name": "Deployment overview (Development)",
+        "uri": "https://localhost:3000/index.html",
+        "icon": {
+          "light": "marketplace/icon-dev-light.png",
+          "dark": "marketplace/icon-dev-dark.png"
+        }
+      },
+      "constraints": [
+        {
+          "name": "Feature",
+          "properties": {
+            "featureId": "mootalk.deployment-view.feature-view-dev"
+          }
+        }
+      ]
+    }
+  ]
+}
