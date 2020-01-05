@@ -27,7 +27,7 @@ steps:
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
     Contents: '*.vsix'
-    TargetFolder: '$(Build.Artifactdstagingirectory)/package'
+    TargetFolder: '$(Build.Artifactstagingdirectory)/package'
     CleanTargetFolder: true
     flattenFolders: true
 - task: CopyFiles@2
