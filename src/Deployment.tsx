@@ -6,18 +6,26 @@ export class Deployment {
     queuedOn: Date;
     status: IStatusProps;
     releaseName: string;
+    releaseLink: string;
 
-    constructor(environmentName: string, queuedOn: Date, status: IStatusProps, releaseName: string) {
+    constructor(environmentName: string, queuedOn: Date, status: IStatusProps, releaseName: string, releaseLink: string) {
         this.environmentName = environmentName;
         this.queuedOn = queuedOn;
         this.status = status;
         this.releaseName = releaseName;
+        this.releaseLink = releaseLink;
+    }
+
+    public getReleaseLink(): string {
+        return this.releaseLink;
     }
 
     static create(releaseEnvironment: ReleaseEnvironment, release: Release): Deployment {
+        const webLink = release._links.web.href;
         const sortedDeploySteps = releaseEnvironment.deploySteps.sort(step => step.queuedOn.getTime());
         const lastDeployStep = sortedDeploySteps.splice(-1)[0];
-        return new Deployment(releaseEnvironment.name, lastDeployStep.queuedOn, Deployment.convert(lastDeployStep.status), release.name);
+
+        return new Deployment(releaseEnvironment.name, lastDeployStep.queuedOn, Deployment.convert(lastDeployStep.status), release.name, webLink);
     }
 
     private static convert(status: DeploymentStatus): IStatusProps {

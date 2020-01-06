@@ -11,8 +11,14 @@ export class ReleaseDef {
         this.environments = environments;
     }
 
-    public getEnvironment(name: string): Environment {
-        return this.environments.filter(env => env.name === name)[0];
+    public getEnvironment(name: string): Environment | undefined {
+        const filteredEnvironments = this.environments.filter(env => env.name === name);
+
+        if (filteredEnvironments.length === 0) {
+            return undefined;
+        }
+
+        return filteredEnvironments[0];
     }
 
     public getReleasedEnvironments(): Environment[] {

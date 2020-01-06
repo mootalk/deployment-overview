@@ -27,7 +27,13 @@ export class Environment {
         return '-';
     }
 
+    public getDeployedVersionLink(): string | undefined {
+        if (this.deployment === undefined) {
+            return undefined;
+        }
 
+        return this.deployment.getReleaseLink();
+    }
 
     constructor(id: number, name: string, rank: number, currentReleaseId?: number) {
         this.id = id;

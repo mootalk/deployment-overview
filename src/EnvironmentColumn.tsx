@@ -1,6 +1,7 @@
-import { Status, StatusSize } from "azure-devops-ui/Status";
+import { Status, StatusSize, Statuses } from "azure-devops-ui/Status";
 import { Tooltip } from "azure-devops-ui/TooltipEx";
 import { Ago } from "azure-devops-ui/Ago";
+import { Link } from "azure-devops-ui/Link";
 import { Duration } from "azure-devops-ui/Duration";
 import { Icon, IIconProps } from "azure-devops-ui/Icon";
 import { css } from "azure-devops-ui/Util";
@@ -21,8 +22,15 @@ export class EnvironmentColumn {
 
     public renderCell(rowIndex: number, columnIndex: number, tableColumn: ITableColumn<ReleaseDef>, tableItem: ReleaseDef): JSX.Element {
         const environment = tableItem.getEnvironment(tableColumn.name!);
+
+        if (environment === undefined) {
+            return (<SimpleTableCell columnIndex={columnIndex} />);
+        }
+
         const version = environment.getDeployedVersion();
+        const versionLink = environment.getDeployedVersionLink();
         const queuedOn = environment.deployment?.queuedOn ?? new Date();
+        const status = environment.getStatus();
 
         return (
             <TwoLineTableCell
@@ -33,7 +41,7 @@ export class EnvironmentColumn {
                 line1={
                     <span className="flex-row scroll-hidden">
                         <Status
-                            {...environment.getStatus()}
+                            {...status}
                             className="icon-large-margin"
                             size={
                                 // @ts-ignore
@@ -42,7 +50,15 @@ export class EnvironmentColumn {
 
                         <div className="flex-row scroll-hidden">
                             <Tooltip overflowOnly={true}>
-                                <span className="text-ellipsis">{version}</span>
+                            <Link
+              className="fontSizeM font-size-m text-ellipsis bolt-table-link bolt-table-inline-link"
+              excludeTabStop
+              href={versionLink}
+              target="_blank"
+            >
+              {version}
+            </Link>
+                                {/* <span className="text-ellipsis">{version}</span> */}
                             </Tooltip>
                         </div>
                     </span>

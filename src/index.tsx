@@ -11,6 +11,7 @@ import "azure-devops-ui/Core/_platformCommon.scss";
 import { Surface } from 'azure-devops-ui/Surface';
 import { Header, TitleSize } from "azure-devops-ui/Header";
 import { Page } from "azure-devops-ui/Page";
+import { Card } from "azure-devops-ui/Card";
 
 // UI Data
 import { ArrayItemProvider } from "azure-devops-ui/Utilities/Provider";
@@ -18,7 +19,8 @@ import { ArrayItemProvider } from "azure-devops-ui/Utilities/Provider";
 // Table
 import {
     ITableColumn,
-    Table} from "azure-devops-ui/Table";
+    Table
+} from "azure-devops-ui/Table";
 
 // Services, Models & UI
 import { ReleaseService } from './ReleaseService';
@@ -67,7 +69,7 @@ export class App extends React.Component<{}, IAppState> {
     }
 
     private setColumns(releaseDefinitions: ReleaseDef[]) {
-        const columns: ITableColumn<ReleaseDef>[] = [ new ReleaseColumn() ];
+        const columns: ITableColumn<ReleaseDef>[] = [new ReleaseColumn()];
         const environmentColumns = releaseDefinitions
             .flatMap(def => def.environments)
             .sort((left, right) => left.rank - right.rank)
@@ -94,10 +96,12 @@ export class App extends React.Component<{}, IAppState> {
                         }
                     />
 
-                    <Table
-                        className="page-content-left page-content-right page-content-top page-content-bottom"
-                        itemProvider={this.itemProvider}
-                        columns={this.columns}></Table>
+                    <Card className="flex-grow bolt-table-card" contentProps={{ contentPadding: false }}>
+                        <Table
+                            className="page-content-left page-content-right page-content-top page-content-bottom"
+                            itemProvider={this.itemProvider}
+                            columns={this.columns}></Table>
+                    </Card>
                 </Page>
             </Surface>
         );
