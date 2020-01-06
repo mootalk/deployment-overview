@@ -50,15 +50,14 @@ export class EnvironmentColumn {
 
                         <div className="flex-row scroll-hidden">
                             <Tooltip overflowOnly={true}>
-                            <Link
-              className="fontSizeM font-size-m text-ellipsis bolt-table-link bolt-table-inline-link"
-              excludeTabStop
-              href={versionLink}
-              target="_blank"
-            >
-              {version}
-            </Link>
-                                {/* <span className="text-ellipsis">{version}</span> */}
+                                <Link
+                                    className="fontSizeM font-size-m text-ellipsis bolt-table-link bolt-table-inline-link"
+                                    excludeTabStop
+                                    href={versionLink}
+                                    target="_blank"
+                                >
+                                    {version}
+                                </Link>
                             </Tooltip>
                         </div>
                     </span>

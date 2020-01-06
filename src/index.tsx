@@ -25,6 +25,7 @@ import {
 // Services, Models & UI
 import { ReleaseService } from './ReleaseService';
 import { ReleaseDef } from './ReleaseDef';
+import { Environment } from './Environment';
 import { ReleaseColumn } from './ReleaseColumn';
 import { EnvironmentColumn } from './EnvironmentColumn';
 
@@ -73,14 +74,13 @@ export class App extends React.Component<{}, IAppState> {
         const environmentColumns = releaseDefinitions
             .flatMap(def => def.environments)
             .sort((left, right) => left.rank - right.rank)
-            .map(env => env.name)
             .filter(distinct)
-            .map(columnName => new EnvironmentColumn(columnName));
+            .map(columnName => new EnvironmentColumn(columnName.name));
 
         columns.push(...environmentColumns);
         this.columns = columns;
-        function distinct(value: string, index: number, self: string[]): boolean {
-            return self.indexOf(value) === index;
+        function distinct(value: Environment, index: number, self: Environment[]): boolean {
+            return self.findIndex(env => env.name.toUpperCase() == value.name.toUpperCase()) === index;
         }
     }
 
@@ -96,12 +96,10 @@ export class App extends React.Component<{}, IAppState> {
                         }
                     />
 
-                    <Card className="flex-grow bolt-table-card" contentProps={{ contentPadding: false }}>
-                        <Table
-                            className="page-content-left page-content-right page-content-top page-content-bottom"
-                            itemProvider={this.itemProvider}
-                            columns={this.columns}></Table>
-                    </Card>
+                    <Table
+                        className="page-content-left page-content-right page-content-top page-content-bottom"
+                        itemProvider={this.itemProvider}
+                        columns={this.columns}></Table>
                 </Page>
             </Surface>
         );

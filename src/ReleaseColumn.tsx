@@ -1,4 +1,5 @@
 import { Status } from "azure-devops-ui/Status";
+import { Link } from "azure-devops-ui/Link";
 import { Tooltip } from "azure-devops-ui/TooltipEx";
 import { ITableColumn, SimpleTableCell } from "azure-devops-ui/Table";
 import { ReleaseDef } from './ReleaseDef';
@@ -20,7 +21,14 @@ export class ReleaseColumn {
 
             <div className="flex-row scroll-hidden">
                 <Tooltip overflowOnly={true}>
-                    <span className="text-ellipsis">{tableItem.name}</span>
+                    <Link
+                        className="fontSizeM font-size-m text-ellipsis bolt-table-link bolt-table-inline-link"
+                        excludeTabStop
+                        href={tableItem.link}
+                        target="_blank"
+                    >
+                        {tableItem.name}
+                    </Link>
                 </Tooltip>
             </div>
         </SimpleTableCell>;

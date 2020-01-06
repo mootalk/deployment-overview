@@ -4,15 +4,17 @@ import { Environment } from "./Environment";
 
 export class ReleaseDef {
     name: string;
+    link: string;
     environments: Environment[];
 
-    constructor(name: string, environments: Environment[]) {
+    constructor(name: string, link: string, environments: Environment[]) {
         this.name = name;
         this.environments = environments;
+        this.link = link;
     }
 
     public getEnvironment(name: string): Environment | undefined {
-        const filteredEnvironments = this.environments.filter(env => env.name === name);
+        const filteredEnvironments = this.environments.filter(env => env.name.toUpperCase() === name.toUpperCase());
 
         if (filteredEnvironments.length === 0) {
             return undefined;
@@ -67,6 +69,8 @@ export class ReleaseDef {
         releaseDefinition.environments.forEach(environment => {
             envs.push(Environment.create(environment));
         });
-        return new ReleaseDef(releaseDefinition.name, envs);
+
+        const webLink = releaseDefinition._links.web.href;
+        return new ReleaseDef(releaseDefinition.name, webLink, envs);
     }
 }
