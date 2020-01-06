@@ -28,6 +28,8 @@ import { ReleaseDef } from './ReleaseDef';
 import { Environment } from './Environment';
 import { ReleaseColumn } from './ReleaseColumn';
 import { EnvironmentColumn } from './EnvironmentColumn';
+import { StagesColumn } from './StagesColumn';
+import { StageColumn } from './StageColumn';
 
 interface IAppState {
     releaseDefinitions: ReleaseDef[];
@@ -77,28 +79,37 @@ export class App extends React.Component<{}, IAppState> {
     }
 
     private setColumns(releaseDefinitions: ReleaseDef[]) {
-        const environments = releaseDefinitions.flatMap(def => def.environments);
-        const environmentMap = new Map();
+        // const environments = releaseDefinitions.flatMap(def => def.environments);
+        // const environmentMap = new Map();
 
-        for (var item of environments) {
-            var e = environmentMap.get(item.name)
-            if (e) {
-                e.rank = Math.max(e.rank, item.rank);
-            } else {
-                environmentMap.set(item.name,
-                    { name: item.name, rank: item.rank })
-            }
-        }
+        // for (var item of environments) {
+        //     var e = environmentMap.get(item.name)
+        //     if (e) {
+        //         e.rank = Math.max(e.rank, item.rank);
+        //     } else {
+        //         environmentMap.set(item.name,
+        //             { name: item.name, rank: item.rank })
+        //     }
+        // }
 
-        var result = Array.from(environmentMap.values());
+        // var result = Array.from(environmentMap.values());
 
         const columns: ITableColumn<ReleaseDef>[] = [new ReleaseColumn()];
-        const environmentColumns = result
-            .sort((left, right) => left.rank - right.rank)
-            .filter(distinct)
-            .map(columnName => new EnvironmentColumn(columnName.name));
 
-        columns.push(...environmentColumns);
+        columns.push(new StageColumn("Dev"));
+        columns.push(new StageColumn("Systemtest"));
+        columns.push(new StageColumn("Test"));
+        columns.push(new StageColumn("Prod"));
+
+        // columns.push(new StagesColumn());
+
+        // const environmentColumns = result
+        //     .sort((left, right) => left.rank - right.rank)
+        //     .filter(distinct)
+        //     .map(columnName => new EnvironmentColumn(columnName.name));
+
+        // columns.push(...environmentColumns);
+
         this.columns = columns;
         function distinct(value: Environment, index: number, self: Environment[]): boolean {
             return self.findIndex(env => env.name.toUpperCase() == value.name.toUpperCase()) === index;
@@ -117,13 +128,13 @@ export class App extends React.Component<{}, IAppState> {
                         }
                     />
                     <div className="page-content-left page-content-right page-content-top page-content-bottom">
-                    <Card
-                        className="flex-grow">
-                        <Table
-                            itemProvider={this.itemProvider}
-                            columns={this.columns}
-                            scrollable={true}></Table>
-                    </Card>
+                        <Card
+                            className="flex-grow">
+                            <Table
+                                itemProvider={this.itemProvider}
+                                columns={this.columns}
+                                scrollable={true}></Table>
+                        </Card>
                     </div>
                 </Page>
             </Surface>

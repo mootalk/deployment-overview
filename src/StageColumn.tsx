@@ -9,26 +9,29 @@ import { ITableColumn, SimpleTableCell, TwoLineTableCell, renderLoadingCell, Tab
 import { ReleaseDef } from './ReleaseDef';
 import React from "react";
 import { render } from "react-dom";
+import { aggregateStatusesFromEnvironments } from "./StatusAggregator";
 
-export class EnvironmentColumn {
+export class StageColumn {
     id: string;
     name: string;
     width: number;
 
-    constructor(environmentName: string) {
-        this.id = environmentName;
-        this.name = environmentName;
+    constructor(stageName: string) {
+        this.id = stageName;
+        this.name = stageName;
         this.width = 200;
     }
 
     public renderCell(rowIndex: number, columnIndex: number, tableColumn: ITableColumn<ReleaseDef>, tableItem: ReleaseDef): JSX.Element {
-        const environment = tableItem.getEnvironment(tableColumn.name!);
+        const environments = tableItem.getEnvironmentsForStage(tableColumn.name!);
+        const status = aggregateStatusesFromEnvironments(environments);
 
-        if (environment === undefined) {
+        if (environments.length === 0) {
             return (<SimpleTableCell columnIndex={columnIndex} />);
         }
 
-        if (environment.isLoading()) {
+        var firstEnvironment = environments[0];
+        if (firstEnvironment.isLoading()) {
             const loadingCell = renderLoadingCell(
                 // @ts-ignore
                 TableColumnLayout.twoLine);
@@ -37,10 +40,22 @@ export class EnvironmentColumn {
             }
         }
 
-        const version = environment.getDeployedVersion();
-        const versionLink = environment.getDeployedVersionLink();
-        const queuedOn = environment.deployment?.queuedOn ?? new Date();
-        const status = environment.getStatus();
+        var version = 'Multiple versions found!';
+        var versionLink = tableItem.link;
+        var queuedOn = firstEnvironment.deployment?.queuedOn ?? new Date();
+
+        const versions = environments
+            .map(env => env.getDeployedVersion())
+            .filter(distinct);
+
+        function distinct(value: string, index: number, self: string[]): boolean {
+            return self.indexOf(value) === index;
+        }
+
+        if (versions.length === 1) {
+            version = firstEnvironment.getDeployedVersion();
+            versionLink = firstEnvironment.getDeployedVersionLink() ?? '';
+        }
 
         return (
             <TwoLineTableCell
