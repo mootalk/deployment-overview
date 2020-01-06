@@ -54,10 +54,17 @@ export class App extends React.Component<{}, IAppState> {
     }
 
     public async componentDidMount() {
-        console.log('hi there');
         const definitions = await ReleaseService.getDefinitions();
-        console.log('look what I found!');
-        console.log(definitions);
+        this.updateReleaseDefinitions(definitions);
+
+
+        const promises: Promise<void>[] = [];
+        definitions.flatMap(def => def.getReleasedEnvironments())
+            .forEach(environment => {
+                promises.push(ReleaseService.updateEnvironmentWithDeploymentInformation(environment));
+            });
+
+        await Promise.all(promises);
         this.updateReleaseDefinitions(definitions);
     }
 
@@ -70,9 +77,23 @@ export class App extends React.Component<{}, IAppState> {
     }
 
     private setColumns(releaseDefinitions: ReleaseDef[]) {
+        const environments = releaseDefinitions.flatMap(def => def.environments);
+        const environmentMap = new Map();
+
+        for (var item of environments) {
+            var e = environmentMap.get(item.name)
+            if (e) {
+                e.rank = Math.max(e.rank, item.rank);
+            } else {
+                environmentMap.set(item.name,
+                    { name: item.name, rank: item.rank })
+            }
+        }
+
+        var result = Array.from(environmentMap.values());
+
         const columns: ITableColumn<ReleaseDef>[] = [new ReleaseColumn()];
-        const environmentColumns = releaseDefinitions
-            .flatMap(def => def.environments)
+        const environmentColumns = result
             .sort((left, right) => left.rank - right.rank)
             .filter(distinct)
             .map(columnName => new EnvironmentColumn(columnName.name));
@@ -95,11 +116,15 @@ export class App extends React.Component<{}, IAppState> {
                             TitleSize.Medium
                         }
                     />
-
-                    <Table
-                        className="page-content-left page-content-right page-content-top page-content-bottom"
-                        itemProvider={this.itemProvider}
-                        columns={this.columns}></Table>
+                    <div className="page-content-left page-content-right page-content-top page-content-bottom">
+                    <Card
+                        className="flex-grow">
+                        <Table
+                            itemProvider={this.itemProvider}
+                            columns={this.columns}
+                            scrollable={true}></Table>
+                    </Card>
+                    </div>
                 </Page>
             </Surface>
         );

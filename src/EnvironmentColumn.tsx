@@ -5,9 +5,10 @@ import { Link } from "azure-devops-ui/Link";
 import { Duration } from "azure-devops-ui/Duration";
 import { Icon, IIconProps } from "azure-devops-ui/Icon";
 import { css } from "azure-devops-ui/Util";
-import { ITableColumn, SimpleTableCell, TwoLineTableCell } from "azure-devops-ui/Table";
+import { ITableColumn, SimpleTableCell, TwoLineTableCell, renderLoadingCell, TableColumnLayout } from "azure-devops-ui/Table";
 import { ReleaseDef } from './ReleaseDef';
 import React from "react";
+import { render } from "react-dom";
 
 export class EnvironmentColumn {
     id: string;
@@ -25,6 +26,16 @@ export class EnvironmentColumn {
 
         if (environment === undefined) {
             return (<SimpleTableCell columnIndex={columnIndex} />);
+        }
+
+        if (environment.isLoading()) {
+            const loadingCell = renderLoadingCell(
+                // @ts-ignore
+                TableColumnLayout.twoLine);
+                
+            if (loadingCell) {
+                return loadingCell;
+            }
         }
 
         const version = environment.getDeployedVersion();

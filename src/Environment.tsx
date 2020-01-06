@@ -9,6 +9,10 @@ export class Environment {
     currentReleaseId?: number;
     deployment?: Deployment;
 
+    public isLoading(): boolean {
+        return this.currentReleaseId !== undefined && this.deployment === undefined;
+    }
+
     public hasCurrentRelease(): boolean {
         return this.currentReleaseId !== undefined;
     }

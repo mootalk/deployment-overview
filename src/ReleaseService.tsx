@@ -20,18 +20,10 @@ export class ReleaseService {
         const definitions = await this.getReleaseDefinitions();
         var newDefs = definitions.map(def => ReleaseDef.create(def));
 
-        const promises: Promise<void>[] = [];
-        newDefs.flatMap(def => def.getReleasedEnvironments())
-            .forEach(environment => {
-                promises.push(this.updateEnvironmentWithDeploymentInformation(environment));
-            });
-
-        await Promise.all(promises);
-
         return newDefs;
     }
 
-    private static async updateEnvironmentWithDeploymentInformation(environment: Environment): Promise<void> {
+    public static async updateEnvironmentWithDeploymentInformation(environment: Environment): Promise<void> {
         const releaseId = environment.currentReleaseId;
         if (!releaseId) {
             console.log(environment);
