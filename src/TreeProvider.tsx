@@ -1,18 +1,33 @@
-// import { ISimpleListCell } from "azure-devops-ui/List";
-// import { MenuItemType } from "azure-devops-ui/Menu";
-// import { ColumnMore, ISimpleTableCell } from "azure-devops-ui/Table";
-// import { renderExpandableTreeCell, renderTreeCell } from "azure-devops-ui/TreeEx";
-// import {
-//     ITreeItem,
-//     ITreeItemProvider,
-//     TreeItemProvider
-// } from "azure-devops-ui/Utilities/TreeItemProvider";
-// import { IReleasePath } from "./IReleasePath";
-// import { ReleaseDef } from "./ReleaseDef";
+import { ISimpleListCell } from "azure-devops-ui/List";
+import { MenuItemType } from "azure-devops-ui/Menu";
+import { ColumnMore, ISimpleTableCell } from "azure-devops-ui/Table";
+import { renderExpandableTreeCell, renderTreeCell } from "azure-devops-ui/TreeEx";
+import {
+    ITreeItem,
+    ITreeItemProvider,
+    TreeItemProvider
+} from "azure-devops-ui/Utilities/TreeItemProvider";
+import { IReleasePath } from "./IReleasePath";
+import { ReleaseDef } from "./ReleaseDef";
 
-// export function createItemProvider(items: ReleaseDef[]) {
+export function createItemProvider(items: ReleaseDef[]) {
+    const rootItems: Array<ITreeItem<IReleasePath>> = [];
 
-// }
+    items.forEach(item => {
+        const pathParts  = getPathParts(item.path);
+
+        
+
+    });
+
+    function getPathParts(path: string): string[] | undefined {
+        if (path === '/') {
+            return undefined;
+        }
+
+        return path.split('/');
+    }
+}
 
 
 // export function getItemProvider(rootItemsCount: number): ITreeItemProvider<IReleasePath> {
