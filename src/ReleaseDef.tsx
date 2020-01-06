@@ -21,7 +21,8 @@ export class ReleaseDef implements IReleasePath {
     public getEnvironmentsForStage(name: string): Environment[] {
         const regex = new RegExp(`\\b${name}\\b`, 'i');
 
-        return this.environments.filter(env => regex.test(env.name));
+        return this.environments
+                .filter(env => regex.test(env.name));
     }
 
     public getEnvironment(name: string): Environment | undefined {
