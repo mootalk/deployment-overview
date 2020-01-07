@@ -118,7 +118,7 @@ export class ReleaseDef implements IReleasePath {
 
         var version = 'Multiple versions found!';
         var versionLink = this.link;
-        var queuedOn = firstEnvironment.deployment?.queuedOn ?? new Date();
+        var queuedOn = firstEnvironment.deployment?.queuedOn;
 
         const versions = environments
             .map(env => env.getDeployedVersion())
@@ -144,17 +144,16 @@ export class ReleaseDef implements IReleasePath {
                             StatusSize.m
                         } />
 
-                    <Link
+                    {queuedOn && <Link
                         className="bolt-table-link"
                         excludeTabStop
                         href={versionLink}
                         target="_blank"
                     >
                         {version}
-                    </Link>
+                    </Link>}
                 </span>
-
-                {this.WithIcon({
+                {queuedOn && this.WithIcon({
                     className: "fontSize font-size",
                     iconProps: { iconName: "Calendar" },
                     children: (<Ago date={queuedOn} /*format={AgoFormat.Extended}*/ />)
