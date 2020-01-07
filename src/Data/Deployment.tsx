@@ -22,7 +22,7 @@ export class Deployment {
 
     static create(releaseEnvironment: ReleaseEnvironment, release: Release): Deployment {
         const webLink = release._links.web.href;
-        const sortedDeploySteps = releaseEnvironment.deploySteps.sort(step => step.queuedOn.getTime());
+        const sortedDeploySteps = releaseEnvironment.deploySteps.sort((a,b) => a.queuedOn.getTime() - b.queuedOn.getTime());
         const lastDeployStep = sortedDeploySteps.splice(-1)[0];
 
         return new Deployment(releaseEnvironment.name, lastDeployStep.queuedOn, Deployment.convert(lastDeployStep.status), release.name, webLink);
@@ -36,6 +36,7 @@ export class Deployment {
             case DeploymentStatus.PartiallySucceeded: return Statuses.Warning;
             case DeploymentStatus.NotDeployed: return Statuses.Queued;
         }
+
         return Statuses.Skipped;
     }
 }
