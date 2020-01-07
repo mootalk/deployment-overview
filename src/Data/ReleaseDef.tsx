@@ -1,6 +1,11 @@
 import { ReleaseDefinition } from 'azure-devops-extension-api/Release/Release';
-import { Statuses, IStatusProps, Status } from "azure-devops-ui/Status";
+import { Statuses, StatusSize, IStatusProps, Status } from "azure-devops-ui/Status";
 import { Environment } from "./Environment";
+
+// Table
+import {
+    TableColumnLayout
+} from "azure-devops-ui/Table";
 
 import { IReleasePath } from "../Tree/IReleasePath";
 import { aggregateStatuses, aggregateStatusesFromEnvironments } from './StatusAggregator';
@@ -75,9 +80,12 @@ export class ReleaseDef implements IReleasePath {
     }
 
     public getNameCell(): React.ReactNode {
-        return () =>
-            <div>
-                <Status {...this.getStatus()} className="icon-large-margin" />
+        return (
+            <span>
+                <Status {...this.getStatus()} className="icon-large-margin" size={
+                            // @ts-ignore
+                            StatusSize.m
+                        }/>
 
                 <div className="flex-row scroll-hidden">
                     <Tooltip overflowOnly={true}>
@@ -85,17 +93,16 @@ export class ReleaseDef implements IReleasePath {
                             className="fontSizeM font-size-m text-ellipsis bolt-table-link bolt-table-inline-link"
                             excludeTabStop
                             href={this.link}
-                            target="_blank"
-                        >
+                            target="_blank" >
                             {this.name}
                         </Link>
                     </Tooltip>
                 </div>
-            </div>
+            </span>);
     }
 
     public getStageCell(stage: string): React.ReactNode {
-        const environments = this.getEnvironmentsForStage(this.name!);
+        const environments = this.getEnvironmentsForStage(stage);
         const status = aggregateStatusesFromEnvironments(environments);
 
         if (environments.length === 0) {

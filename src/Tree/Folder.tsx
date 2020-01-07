@@ -1,6 +1,6 @@
 import { ITreeItem } from "azure-devops-ui/Utilities/TreeItemProvider";
 import { IReleasePath } from "./IReleasePath";
-import { IStatusProps, Status } from "azure-devops-ui/Status";
+import { Statuses, StatusSize, IStatusProps, Status } from "azure-devops-ui/Status";
 import { aggregateStatuses } from '../Data/StatusAggregator';
 import { Tooltip } from "azure-devops-ui/TooltipEx";
 import { Link } from "azure-devops-ui/Link";
@@ -18,8 +18,11 @@ export class Folder implements IReleasePath {
     path: string;
 
     public getNameCell(): React.ReactNode {
-        return () =>
-            <div><Status {...this.getStatus()} className="icon-large-margin" />
+        return (
+            <span><Status {...this.getStatus()} className="icon-large-margin" size={
+                // @ts-ignore
+                StatusSize.m
+            }/>
                 <div className="flex-row scroll-hidden">
                     <Tooltip overflowOnly={true}>
                         <Link
@@ -31,11 +34,11 @@ export class Folder implements IReleasePath {
                         </Link>
                     </Tooltip>
                 </div>
-            </div>;
+            </span>);
     }
 
     getStageCell(stage: string): React.ReactNode {
-        return () => <div></div>;
+        return <div></div>;
     }
 
     constructor(name: string, path: string) {

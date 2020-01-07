@@ -7,7 +7,7 @@ export class SimpleTreeItem implements ISimpleTableCell {
 
     public static createFrom(releasePath: IReleasePath, stages: string[]): SimpleTreeItem {
         return {
-            name: releasePath.name,
+            name: {textNode: releasePath.getNameCell()},
             Dev: {textNode: releasePath.getStageCell("Dev")},
             Systemtest: {textNode: releasePath.getStageCell("Systemtest")},
             Test: {textNode: releasePath.getStageCell("Test")},

@@ -20,7 +20,7 @@ export class TreeProvider {
     private stages: string[];
 
     public getItemProvider(): ITreeItemProvider<SimpleTreeItem>{
-        const items: ITreeItem<SimpleTreeItem>[] = this.rootItems.map(item => this.convert(item));
+        const items: ITreeItem<SimpleTreeItem>[] = this.rootItems.sort(this.compare).map(item => this.convert(item));
 
         return new TreeItemProvider(items);
     }
@@ -29,14 +29,26 @@ export class TreeProvider {
         var childItems: ITreeItem<SimpleTreeItem>[] | undefined;
 
         if (item.childItems.length !== 0){
-            childItems = item.childItems.map(child => this.convert(child))
+            childItems = item.childItems.sort(this.compare).map(child => this.convert(child))
         }
 
         return {
-            expanded: false,
+            expanded: true,
             data: SimpleTreeItem.createFrom(item, this.stages),
             childItems: childItems
         }
+    }
+
+    private compare(left: IReleasePath, right: IReleasePath) {
+        if (left.name < right.name) {
+            return -1;
+        }
+
+        if (left.name > right.name) {
+            return 1;
+        }
+
+        return 0;
     }
 
     constructor(items: ReleaseDef[], stages: string[]) {
