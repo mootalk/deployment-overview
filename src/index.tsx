@@ -22,20 +22,30 @@ import {
     Table
 } from "azure-devops-ui/Table";
 
+// Tree
+import { Tree } from "azure-devops-ui/TreeEx";
+import { ITreeItemProvider, ITreeItemEx } from "azure-devops-ui/Utilities/TreeItemProvider";
+
 // Services, Models & UI
-import { ReleaseService } from './ReleaseService';
-import { ReleaseDef } from './ReleaseDef';
-import { Environment } from './Environment';
-import { ReleaseColumn } from './ReleaseColumn';
-import { EnvironmentColumn } from './EnvironmentColumn';
-import { StagesColumn } from './StagesColumn';
-import { StageColumn } from './StageColumn';
+import { ReleaseService } from './Data/ReleaseService';
+import { ReleaseDef } from './Data/ReleaseDef';
+import { Environment } from './Data/Environment';
+import { ReleaseColumn } from './Table/ReleaseColumn';
+import { EnvironmentColumn } from './Table/EnvironmentColumn';
+import { StagesColumn } from './Table/StagesColumn';
+import { StageColumn } from './Table/StageColumn';
+import { SimpleTreeItem } from './Tree/SimpleTreeItem';
+import { TreeReleaseColumn } from './Tree/TreeReleaseColumn';
+import { TreeProvider } from './Tree/TreeProvider';
+import { TreeStageColumn } from './Tree/TreeStageColumn';
 
 interface IAppState {
     releaseDefinitions: ReleaseDef[];
 }
 
 export class App extends React.Component<{}, IAppState> {
+    private stages: string[] = ['Dev', 'Systemtest', 'Test', 'Prod'];
+
     constructor(props: {}) {
         super(props);
 
@@ -45,6 +55,12 @@ export class App extends React.Component<{}, IAppState> {
 
         this.updateReleaseDefinitions([]);
     }
+
+    private treeItemProvider!: ITreeItemProvider<SimpleTreeItem>;
+    private treeColumns = [
+        new TreeReleaseColumn(),
+        new TreeStageColumn("dev")
+    ];
 
     private itemProvider!: ArrayItemProvider<ReleaseDef>;
     private columns: ITableColumn<ReleaseDef>[] = [
@@ -74,6 +90,8 @@ export class App extends React.Component<{}, IAppState> {
         this.setColumns(releaseDefinitions);
 
         this.itemProvider = new ArrayItemProvider(releaseDefinitions);
+        // const providerBuilder = new TreeProvider(releaseDefinitions, this.stages);
+        // this.treeItemProvider = providerBuilder.getItemProvider();
 
         this.setState({ releaseDefinitions: releaseDefinitions });
     }
@@ -136,6 +154,22 @@ export class App extends React.Component<{}, IAppState> {
                                 scrollable={true}></Table>
                         </Card>
                     </div>
+
+                    {/* <div className="page-content-left page-content-right page-content-top page-content-bottom">
+                        <Card
+                            className="flex-grow bolt-card-no-vertical-padding"
+                            contentProps={{ contentPadding: false }}
+                        >
+                            <Tree<SimpleTreeItem>
+                                columns={this.treeColumns}
+                                itemProvider={this.treeItemProvider}
+                                onToggle={(event, treeItem: ITreeItemEx<SimpleTreeItem>) => {
+                                    this.treeItemProvider.toggle(treeItem.underlyingItem);
+                                }}
+                                scrollable={true}
+                            />
+                        </Card>
+                    </div> */}
                 </Page>
             </Surface>
         );

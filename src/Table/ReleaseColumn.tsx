@@ -2,7 +2,7 @@ import { Status } from "azure-devops-ui/Status";
 import { Link } from "azure-devops-ui/Link";
 import { Tooltip } from "azure-devops-ui/TooltipEx";
 import { ITableColumn, SimpleTableCell } from "azure-devops-ui/Table";
-import { ReleaseDef } from './ReleaseDef';
+import { ReleaseDef } from '../Data/ReleaseDef';
 import React from "react";
 
 export class ReleaseColumn {

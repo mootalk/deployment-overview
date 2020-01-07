@@ -6,10 +6,10 @@ import { Duration } from "azure-devops-ui/Duration";
 import { Icon, IIconProps } from "azure-devops-ui/Icon";
 import { css } from "azure-devops-ui/Util";
 import { ITableColumn, SimpleTableCell, TwoLineTableCell, renderLoadingCell, TableColumnLayout } from "azure-devops-ui/Table";
-import { ReleaseDef } from './ReleaseDef';
+import { ReleaseDef } from '../Data/ReleaseDef';
 import React from "react";
 import { render } from "react-dom";
-import { aggregateStatusesFromEnvironments } from "./StatusAggregator";
+import { aggregateStatusesFromEnvironments } from "../Data/StatusAggregator";
 
 export class StageColumn {
     id: string;
