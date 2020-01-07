@@ -29,6 +29,7 @@ interface ITableState {
 
 export class TableIndex extends React.Component<{}, ITableState> {
     private stages: string[] = ['Dev', 'Systemtest', 'Test', 'Prod'];
+    private releaseService: ReleaseService = new ReleaseService();
 
     constructor(props: {}) {
         super(props);
@@ -46,7 +47,7 @@ export class TableIndex extends React.Component<{}, ITableState> {
     ];
 
     public async componentDidMount() {
-        const definitions = await ReleaseService.getDefinitions();
+        const definitions = await this.releaseService.getDefinitions();
         this.updateReleaseDefinitions(definitions);
 
 
@@ -54,7 +55,7 @@ export class TableIndex extends React.Component<{}, ITableState> {
         definitions.forEach(def => {
             def.getReleasedEnvironments()
                 .forEach(environment => {
-                    promises.push(ReleaseService.updateEnvironmentWithDeploymentInformation(environment));
+                    promises.push(this.releaseService.updateEnvironmentWithDeploymentInformation(environment));
                 })
         });
 

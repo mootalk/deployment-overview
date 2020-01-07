@@ -19,21 +19,12 @@ export class Folder implements IReleasePath {
 
     public getNameCell(): React.ReactNode {
         return (
-            <span><Status {...this.getStatus()} className="icon-large-margin" size={
-                // @ts-ignore
-                StatusSize.m
-            }/>
-                <div className="flex-row scroll-hidden">
-                    <Tooltip overflowOnly={true}>
-                        <Link
-                            className="fontSizeM font-size-m text-ellipsis bolt-table-link bolt-table-inline-link"
-                            excludeTabStop
-                            target="_blank"
-                        >
-                            {this.name}
-                        </Link>
-                    </Tooltip>
-                </div>
+            <span>
+                <Status {...this.getStatus()} className="icon-margin" size={
+                    // @ts-ignore
+                    StatusSize.m
+                } />
+                {this.name}
             </span>);
     }
 

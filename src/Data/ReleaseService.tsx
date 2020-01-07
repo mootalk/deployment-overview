@@ -13,17 +13,17 @@ import { Environment } from './Environment';
 import { Deployment } from './Deployment';
 
 export class ReleaseService {
-    private static projectId?: string;
-    private static gottenReleases = new Map<number, Release>();
+    private projectId: Promise<string> = this.getProjectId();
+    private releasePromises = new Map<number, Promise<Release>>();
 
-    public static async getDefinitions(): Promise<ReleaseDef[]> {
+    public async getDefinitions(): Promise<ReleaseDef[]> {
         const definitions = await this.getReleaseDefinitions();
         var newDefs = definitions.map(def => ReleaseDef.create(def));
 
         return newDefs;
     }
 
-    public static async updateEnvironmentWithDeploymentInformation(environment: Environment): Promise<void> {
+    public async updateEnvironmentWithDeploymentInformation(environment: Environment): Promise<void> {
         const releaseId = environment.currentReleaseId;
         if (!releaseId) {
             console.log(environment);
@@ -38,29 +38,26 @@ export class ReleaseService {
         environment.setDeployment(deployment);
     }
 
-    private static async getReleaseDefinitions(): Promise<ReleaseDefinition[]> {
-        const projectId = await this.getProjectId();
+    private async getReleaseDefinitions(): Promise<ReleaseDefinition[]> {
+        const projectId = await this.projectId;
         const releaseClient = getClient(ReleaseRestClient);
         return await releaseClient.getReleaseDefinitions(projectId, undefined, ReleaseDefinitionExpands.Environments);
     }
 
-    private static async getRelease(releaseId: number): Promise<Release> {
-        const projectId = await this.getProjectId();
+    private async getRelease(releaseId: number): Promise<Release> {
+        const projectId = await this.projectId;
         const releaseClient = getClient(ReleaseRestClient);
 
-        var release = this.gottenReleases.get(releaseId);
+        var release = this.releasePromises.get(releaseId);
         if (release === undefined) {
-            release = await releaseClient.getRelease(projectId, releaseId);
+            release = releaseClient.getRelease(projectId, releaseId);
+            this.releasePromises.set(releaseId, release);
         }
 
-        return release;
+        return await release;
     }
 
-    private static async getProjectId(): Promise<string> {
-        if (this.projectId) {
-            return this.projectId!;
-        }
-
+    private async getProjectId(): Promise<string> {
         const projectService = await DevOps.getService<IProjectPageService>(
             // @ts-ignore
             CommonServiceIds.ProjectPageService

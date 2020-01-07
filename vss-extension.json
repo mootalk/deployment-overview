@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "deployment-view",
   "publisher": "mootalk",
-  "version": "0.2.0",
+  "version": "0.7.1",
   "name": "deployment view",
   "description": "A simple overview of the deployed versions in the various stages",
   "public": false,

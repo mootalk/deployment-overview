@@ -12,6 +12,7 @@ import { ReleaseDef } from "../Data/ReleaseDef";
 import { ReleaseDefinitionEnvironment, Release } from "azure-devops-extension-api/Release/Release";
 import { Folder } from "./Folder";
 import { SimpleTreeItem } from "./SimpleTreeItem";
+import { IProjectInfo } from "azure-devops-extension-api";
 
 
 export class TreeProvider {
@@ -19,27 +20,35 @@ export class TreeProvider {
     private definitions: ReleaseDef[];
     private stages: string[];
 
-    public getItemProvider(): ITreeItemProvider<SimpleTreeItem>{
+    public getItemProvider(): ITreeItemProvider<SimpleTreeItem> {
         const items: ITreeItem<SimpleTreeItem>[] = this.rootItems.sort(this.compare).map(item => this.convert(item));
 
         return new TreeItemProvider(items);
     }
 
-    private convert(item: IReleasePath): ITreeItem<SimpleTreeItem>{
+    private convert(item: IReleasePath): ITreeItem<SimpleTreeItem> {
         var childItems: ITreeItem<SimpleTreeItem>[] | undefined;
 
-        if (item.childItems.length !== 0){
+        if (item.childItems.length !== 0) {
             childItems = item.childItems.sort(this.compare).map(child => this.convert(child))
         }
 
         return {
-            expanded: true,
+            expanded: childItems ? true : undefined,
             data: SimpleTreeItem.createFrom(item, this.stages),
             childItems: childItems
         }
     }
 
     private compare(left: IReleasePath, right: IReleasePath) {
+        if (TreeProvider.hasChildItems(left) && !TreeProvider.hasChildItems(right)) {
+            return -1;
+        }
+
+        if (!TreeProvider.hasChildItems(left) && TreeProvider.hasChildItems(right)) {
+            return 1;
+        }
+
         if (left.name < right.name) {
             return -1;
         }
@@ -49,6 +58,14 @@ export class TreeProvider {
         }
 
         return 0;
+    }
+
+    private static hasChildItems(item: IReleasePath) : boolean {
+        if (!item.childItems) {
+            return false;
+        }
+
+        return item.childItems.length > 0;
     }
 
     constructor(items: ReleaseDef[], stages: string[]) {
@@ -93,7 +110,9 @@ export class TreeProvider {
         for (let index = 1; index < parts.length; index++) {
             const part = parts[index];
 
-            folders.push(new Folder(part, newPath ?? '\\'));
+            if (part) {
+                folders.push(new Folder(part, newPath ?? '\\'));
+            }
 
             newPath += `\\${part}`;
         }

@@ -82,22 +82,19 @@ export class ReleaseDef implements IReleasePath {
     public getNameCell(): React.ReactNode {
         return (
             <span>
-                <Status {...this.getStatus()} className="icon-large-margin" size={
-                            // @ts-ignore
-                            StatusSize.m
-                        }/>
+                <Status {...this.getStatus()}
+                    className="icon-margin"
+                    size={
+                        // @ts-ignore
+                        StatusSize.m
+                    } />
 
-                <div className="flex-row scroll-hidden">
-                    <Tooltip overflowOnly={true}>
-                        <Link
-                            className="fontSizeM font-size-m text-ellipsis bolt-table-link bolt-table-inline-link"
-                            excludeTabStop
-                            href={this.link}
-                            target="_blank" >
-                            {this.name}
-                        </Link>
-                    </Tooltip>
-                </div>
+                <Link
+                    className="bolt-table-link no-left-padding"
+                    href={this.link}
+                    target="_blank" >
+                    {this.name}
+                </Link>
             </span>);
     }
 
@@ -141,33 +138,27 @@ export class ReleaseDef implements IReleasePath {
                 <span className="flex-row scroll-hidden">
                     <Status
                         {...status}
-                        className="icon-large-margin"
+                        className="icon-margin"
                         size={
                             // @ts-ignore
                             StatusSize.m
                         } />
 
-                    <div className="flex-row scroll-hidden">
-                        <Tooltip overflowOnly={true}>
-                            <Link
-                                className="fontSizeM font-size-m text-ellipsis bolt-table-link bolt-table-inline-link"
-                                excludeTabStop
-                                href={versionLink}
-                                target="_blank"
-                            >
-                                {version}
-                            </Link>
-                        </Tooltip>
-                    </div>
+                    <Link
+                        className="bolt-table-link"
+                        excludeTabStop
+                        href={versionLink}
+                        target="_blank"
+                    >
+                        {version}
+                    </Link>
                 </span>
 
-                <span className="flex-row scroll-hidden">
-                    {this.WithIcon({
-                        className: "fontSize font-size",
-                        iconProps: { iconName: "Calendar" },
-                        children: (<Ago date={queuedOn} /*format={AgoFormat.Extended}*/ />)
-                    })}
-                </span>
+                {this.WithIcon({
+                    className: "fontSize font-size",
+                    iconProps: { iconName: "Calendar" },
+                    children: (<Ago date={queuedOn} /*format={AgoFormat.Extended}*/ />)
+                })}
             </div>
         );
     }
