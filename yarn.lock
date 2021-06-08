@@ -2129,15 +2129,15 @@ axobject-query@^2.0.2:
     "@babel/runtime" "^7.7.4"
     "@babel/runtime-corejs3" "^7.7.4"
 
-azure-devops-extension-api@~1.157.0:
-  version "1.157.0"
-  resolved "https://registry.yarnpkg.com/azure-devops-extension-api/-/azure-devops-extension-api-1.157.0.tgz#df5429f00400975c7941e440785312b433a21a17"
-  integrity sha512-CCN39A2VaRdi7MCeFWqhcv6dXOfSAf7W2jv1QWX1Hd9ac3n5PzguEPy+66SiPz5M+nDyMSP6aDTtwjEUX9D1kg==
+azure-devops-extension-api@^1.153.2:
+  version "1.158.0"
+  resolved "https://registry.yarnpkg.com/azure-devops-extension-api/-/azure-devops-extension-api-1.158.0.tgz#d299dc034159138a40fc3509f7a16922f0bdeebf"
+  integrity sha512-J8eFuySLBuueKUenJAFvbbE095OMkoCU2yfY5F6G+6qyFMHvNvaubGvIRmC6ja2KckbdjJ62DQS5h/1bwULr1g==
   dependencies:
     azure-devops-extension-sdk "~2.0.11"
     whatwg-fetch "~3.0.0"
 
-azure-devops-extension-sdk@~2.0.11:
+azure-devops-extension-sdk@^2.0.11, azure-devops-extension-sdk@~2.0.11:
   version "2.0.11"
   resolved "https://registry.yarnpkg.com/azure-devops-extension-sdk/-/azure-devops-extension-sdk-2.0.11.tgz#03f06faae8dbc1853e4f2302e465a6aabebcca8a"
   integrity sha512-9Hv4IeKpXR7EbaQn75Qz78rp0nv88XzRTF20E2oHlEFc+TRerekQnJjdrTHChoVvPvsWL/NAEwlqINU60U7neg==
@@ -7169,9 +7169,9 @@ meow@^5.0.0:
     yargs-parser "^10.0.0"
 
 merge-deep@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/merge-deep/-/merge-deep-3.0.2.tgz#f39fa100a4f1bd34ff29f7d2bf4508fbb8d83ad2"
-  integrity sha512-T7qC8kg4Zoti1cFd8Cr0M+qaZfOwjlPDEdZIIPPB2JZctjaPM4fX+i7HOId69tAti2fvO6X5ldfYUONDODsrkA==
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/merge-deep/-/merge-deep-3.0.3.tgz#1a2b2ae926da8b2ae93a0ac15d90cd1922766003"
+  integrity sha512-qtmzAS6t6grwEkNrunqTBdn0qKwFgNWvlxUbAV8es9M7Ot1EbyApytCnvE0jALPa46ZpKDUo527kKiaWplmlFA==
   dependencies:
     arr-union "^3.1.0"
     clone-deep "^0.2.4"
