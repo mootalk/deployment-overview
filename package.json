@@ -23,7 +23,7 @@
     "prop-types": "^15.6.2",
     "react": "~16.12.0",
     "react-dom": "~16.12.0",
-    "node-sass": "~4.13.0"
+    "node-sass": "~7.0.0"
   },
   "devDependencies": {
     "azure-devops-extension-api": "^1.153.2",
